@@ -51,13 +51,16 @@ import Text.Show.Functions ()
 newtype StateT' s m a = StateT' { unStateT' :: StateT s m a }
   deriving (Functor, Applicative, Monad, MonadCatch, MonadMask, MonadThrow, MonadState s, MonadTrans)
 
+instance (Monad m, Semigroup a) => Semigroup (StateT' s m a) where
+  (<>) m1 m2 = (<>) <$> m1 <*> m2
+
 instance (Monad m, Monoid a) => Monoid (StateT' s m a) where
   mempty = lift (return mempty)
-  mappend m1 m2 = mappend <$> m1 <*> m2
+  mappend = (<>)
 
 -- | Sampling strategy.
 newtype SamplingStrategy = SamplingStrategy (Batch () -> IO Sample)
-  deriving (Monoid, Show)
+  deriving (Semigroup, Monoid, Show)
 
 -- | Provided a sampling strategy (which can be keyed on the 'BenchmarkId'),
 -- sample the runtime of all the benchmark cases in the given benchmark tree.

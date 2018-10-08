@@ -32,7 +32,7 @@ deriveJSON defaultOptions{ fieldLabelModifier = drop 1 } ''Measurement
 instance UV.Unbox Measurement
 
 newtype Sample = Sample { _measurements :: UV.Vector Measurement }
-  deriving (Eq, Monoid, Ord, Show)
+  deriving (Eq, Semigroup, Monoid, Ord, Show)
 makeLenses ''Sample
 
 deriving instance FromJSON Sample

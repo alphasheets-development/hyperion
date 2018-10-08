@@ -1,9 +1,12 @@
+{-# OPTIONS_GHC "-fno-warn-orphans" #-}
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Hyperion.Main
   ( defaultMain
@@ -40,6 +43,7 @@ import Data.Time (getCurrentTime)
 import Data.Typeable (Typeable)
 import Data.Version (showVersion)
 import GHC.Generics (Generic)
+import Generics.Deriving.Semigroup (GSemigroup(..), gsappenddefault)
 import Generics.Deriving.Monoid (memptydefault, mappenddefault)
 import Hyperion.Analysis
 import Hyperion.Benchmark
@@ -69,6 +73,9 @@ data ContextInfo = ContextInfo
   , contextExecutableName :: Text
   }
 
+instance GSemigroup JSON.Object where
+  gsappend = (<>)
+
 data ConfigMonoid = ConfigMonoid
   { configMonoidReportOutputs :: [ReportOutput FilePath]
   , configMonoidMode :: First Mode
@@ -77,6 +84,9 @@ data ConfigMonoid = ConfigMonoid
   , configMonoidUserMetadata :: JSON.Object
   , configMonoidSelectorPatterns :: [Text]
   } deriving (Generic, Show)
+
+instance Semigroup ConfigMonoid where
+  (<>) = gsappenddefault
 
 instance Monoid ConfigMonoid where
   mempty = memptydefault

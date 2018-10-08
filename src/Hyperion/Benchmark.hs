@@ -22,7 +22,6 @@ module Hyperion.Benchmark
 
 import Control.Exception (evaluate)
 import Control.Monad.State.Strict (modify')
-import Data.Monoid
 import Data.Vector (Vector)
 import Data.Int (Int64)
 import Data.Text (Text)

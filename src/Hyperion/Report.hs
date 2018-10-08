@@ -7,7 +7,6 @@
 module Hyperion.Report where
 
 import Control.Lens.TH (makeLenses)
-import Data.Monoid
 import GHC.Generics (Generic)
 import qualified Data.Aeson as JSON
 import Data.Aeson ((.=))

@@ -9,7 +9,6 @@ import Control.Monad.State.Strict (State, execState)
 import Data.Function (on)
 import Data.Hashable (Hashable(..))
 import Data.Int
-import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
 
